@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro - Sinaly</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
+
+body{
+background:#eef1f5;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+min-height:100vh;
+padding:30px;
+}
+
+
+
+.cadastro-container{
+background:white;
+padding:35px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.12);
+width:100%;
+max-width:520px;
+}
+
+
+.cadastro-header{
+background:linear-gradient(90deg,#3498db,#2980b9);
+color:white;
+padding:18px;
+border-radius:10px 10px 0 0;
+text-align:center;
+margin:-35px -35px 25px -35px;
+font-size:20px;
+font-weight:bold;
+}
+
+
+
+label{
+font-size:14px;
+font-weight:600;
+color:#2c3e50;
+}
+
+input,select{
+width:100%;
+padding:11px;
+margin-top:6px;
+margin-bottom:14px;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:14px;
+transition:0.2s;
+}
+
+input:focus,select:focus{
+border-color:#3498db;
+outline:none;
+box-shadow:0 0 4px rgba(52,152,219,0.4);
+}
+
+
+
+button{
+width:100%;
+padding:12px;
+background:#3498db;
+border:none;
+border-radius:6px;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+
+a{
+display:block;
+text-align:center;
+margin-top:18px;
+text-decoration:none;
+color:#3498db;
+font-size:14px;
+}
+
+a:hover{
+text-decoration:underline;
+}
+
+
+.mensagem{
+text-align:center;
+font-size:14px;
+margin-top:10px;
+}
+
+
+
+.hidden{
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="cadastro-container">
+
+<div class="cadastro-header">
+Cadastro de Usuário
+</div>
+
+<form id="cadastroForm">
+
+<label>Tipo de Usuário*</label>
+<select id="tipoUsuario" required>
+<option value="usuario">Visitante</option>
+<option value="admin">Administrador</option>
+</select>
+
+<div id="campoCargo" class="hidden">
+<label>Cargo*</label>
+<input type="text" id="cargo" maxlength="50" placeholder="Ex: Coordenador, Diretor...">
+</div>
+
+<label>Possui deficiência?*</label>
+<select id="possuiDeficiencia" required>
+<option value="">Selecione</option>
+<option value="sim">Sim</option>
+<option value="nao">Não</option>
+</select>
+
+<div id="campoDeficiencia" class="hidden">
+<label>Tipo de Deficiência*</label>
+<input type="text" id="tipoDeficiencia" maxlength="100" placeholder="Ex: Auditiva, Visual...">
+</div>
+
+<label>Nome Completo*</label>
+<input type="text" id="nome" maxlength="150" required>
+
+<label>Idade*</label>
+<input type="number" id="idade" min="0" max="120" required>
+
+<label>CPF*</label>
+<input type="text" id="cpf" maxlength="14" placeholder="XXX.XXX.XXX-XX" required>
+
+<label>Telefone*</label>
+<input type="text" id="telefone" maxlength="15" placeholder="(XX) XXXXX-XXXX" required>
+
+<label>E-mail*</label>
+<input type="email" id="email" maxlength="100" placeholder="usuario@dominio.com" required>
+
+<label>Senha*</label>
+<input type="password" id="senha" minlength="8" required>
+
+<label>CEP*</label>
+<input type="text" id="cep" maxlength="9" placeholder="XXXXX-XXX" required>
+
+<label>Rua*</label>
+<input type="text" id="rua" maxlength="50" required>
+
+<label>Bairro*</label>
+<input type="text" id="bairro" maxlength="50" required>
+
+<label>Cidade*</label>
+<input type="text" id="cidade" maxlength="50" required>
+
+<label>Estado*</label>
+<input type="text" id="estado" maxlength="50" required>
+
+<label>Número*</label>
+<input type="number" id="numero" max="9999" required>
+
+<label>Complemento</label>
+<input type="text" id="complemento" maxlength="50">
+
+<label>Data de Cadastro</label>
+<input type="date" id="dataCadastro" readonly>
+
+<button type="submit">Cadastrar</button>
+
+<div class="mensagem" id="mensagem"></div>
+
+</form>
+
+<a href="Login.html">Voltar para Login</a>
+
+</div>
+
+<script>
+
+
+
+const dataCadastro=document.getElementById("dataCadastro");
+const hoje=new Date();
+dataCadastro.value=hoje.toISOString().split("T")[0];
+
+
+
+const tipoUsuario=document.getElementById("tipoUsuario");
+const campoCargo=document.getElementById("campoCargo");
+const cargo=document.getElementById("cargo");
+
+const possuiDeficiencia=document.getElementById("possuiDeficiencia");
+const campoDeficiencia=document.getElementById("campoDeficiencia");
+const tipoDeficiencia=document.getElementById("tipoDeficiencia");
+
+
+
+tipoUsuario.addEventListener("change",()=>{
+
+if(tipoUsuario.value==="admin"){
+campoCargo.classList.remove("hidden");
+cargo.required=true;
+}else{
+campoCargo.classList.add("hidden");
+cargo.required=false;
+cargo.value="";
+}
+
+});
+
+
+
+possuiDeficiencia.addEventListener("change",()=>{
+
+if(possuiDeficiencia.value==="sim"){
+campoDeficiencia.classList.remove("hidden");
+tipoDeficiencia.required=true;
+}else{
+campoDeficiencia.classList.add("hidden");
+tipoDeficiencia.required=false;
+tipoDeficiencia.value="";
+}
+
+});
+
+
+
+const form=document.getElementById("cadastroForm");
+const mensagem=document.getElementById("mensagem");
+
+form.addEventListener("submit",(e)=>{
+
+e.preventDefault();
+
+const usuario={
+nome:document.getElementById("nome").value.trim(),
+email:document.getElementById("email").value,
+senha:document.getElementById("senha").value,
+cpf:document.getElementById("cpf").value,
+telefone:document.getElementById("telefone").value,
+data:dataCadastro.value
+};
+
+const usuarios=JSON.parse(localStorage.getItem("usuarios"))||[];
+
+if(usuarios.some(u=>u.email===usuario.email)){
+mensagem.style.color="red";
+mensagem.textContent="Usuário com esse e-mail já existe!";
+return;
+}
+
+usuarios.push(usuario);
+
+localStorage.setItem("usuarios",JSON.stringify(usuarios));
+
+mensagem.style.color="green";
+mensagem.textContent="Cadastro realizado com sucesso!";
+
+setTimeout(()=>{
+window.location.href="Login.html";
+},1500);
+
+});
+
+</script>
+
+</body>
+</html>
