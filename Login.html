@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Sinaly</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI", Tahoma, sans-serif;
+}
+
+body{
+background:#eef1f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+
+.login-container{
+background:white;
+padding:35px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.12);
+width:100%;
+max-width:380px;
+}
+
+
+.login-header{
+background:linear-gradient(90deg,#3498db,#2980b9);
+color:white;
+padding:18px;
+border-radius:10px 10px 0 0;
+text-align:center;
+margin:-35px -35px 25px -35px;
+font-size:20px;
+font-weight:bold;
+}
+
+
+
+input{
+width:100%;
+padding:12px;
+margin-top:8px;
+margin-bottom:14px;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:14px;
+transition:0.2s;
+}
+
+input:focus{
+border-color:#3498db;
+outline:none;
+box-shadow:0 0 4px rgba(52,152,219,0.4);
+}
+
+
+
+button{
+width:100%;
+padding:12px;
+background:#3498db;
+border:none;
+border-radius:6px;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+
+
+.links{
+text-align:center;
+margin-top:12px;
+}
+
+.links a{
+display:block;
+margin-top:6px;
+text-decoration:none;
+color:#3498db;
+font-size:14px;
+}
+
+.links a:hover{
+text-decoration:underline;
+}
+
+
+
+.voltar-btn{
+display:block;
+text-align:center;
+margin-top:15px;
+background:#2c3e50;
+color:white;
+padding:10px;
+border-radius:6px;
+text-decoration:none;
+transition:0.2s;
+}
+
+.voltar-btn:hover{
+background:#1a252f;
+}
+
+
+
+.mensagem{
+text-align:center;
+font-size:14px;
+margin-bottom:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+<div class="login-header">
+Sinaly - Login
+</div>
+
+<div class="mensagem" id="mensagem"></div>
+
+<form id="loginForm">
+
+<input type="email" id="email" placeholder="E-mail" required>
+
+<input type="password" id="senha" placeholder="Senha" required>
+
+<button type="submit">Entrar</button>
+
+</form>
+
+<div class="links">
+<a href="cadastro.html">Criar conta</a>
+<a href="RecuperaçãoDeSenha.html">Esqueci minha senha</a>
+</div>
+
+<a href="Modelo.html" class="voltar-btn">Voltar à Página Inicial</a>
+
+</div>
+
+<script>
+
+const form=document.getElementById("loginForm");
+const mensagem=document.getElementById("mensagem");
+
+form.addEventListener("submit",(e)=>{
+
+e.preventDefault();
+
+const email=document.getElementById("email").value.trim();
+const senha=document.getElementById("senha").value;
+
+const usuarios=JSON.parse(localStorage.getItem("usuarios"))||[];
+
+const usuario=usuarios.find(u=>u.email===email && u.senha===senha);
+
+if(usuario){
+
+mensagem.style.color="green";
+mensagem.textContent="Login realizado com sucesso!";
+
+localStorage.setItem("usuarioLogado",JSON.stringify(usuario));
+
+setTimeout(()=>{
+window.location.href="TelaInicial.html";
+},1000);
+
+}else{
+
+mensagem.style.color="red";
+mensagem.textContent="E-mail ou senha incorretos.";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
