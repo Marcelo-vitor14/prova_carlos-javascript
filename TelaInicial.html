@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tela Inicial - Sinaly</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI", Tahoma, sans-serif;
+}
+
+body{
+display:flex;
+background:#f4f7fb;
+color:#333;
+}
+
+
+
+.menu-lateral{
+width:240px;
+background:#1f2d3d;
+height:100vh;
+padding-top:25px;
+position:fixed;
+color:white;
+}
+
+.menu-lateral h2{
+text-align:center;
+margin-bottom:35px;
+font-size:24px;
+color:#4db3ff;
+}
+
+.menu-lateral a{
+display:block;
+padding:14px 25px;
+color:#ddd;
+text-decoration:none;
+transition:0.2s;
+}
+
+.menu-lateral a:hover{
+background:#2f4157;
+color:white;
+padding-left:30px;
+}
+
+
+
+.conteudo{
+margin-left:240px;
+padding:30px;
+width:calc(100% - 240px);
+}
+
+
+
+.cabecalho{
+background:white;
+padding:20px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.cabecalho h1{
+font-size:22px;
+}
+
+.logout-btn{
+background:#e74c3c;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+.logout-btn:hover{
+background:#c0392b;
+}
+
+
+
+.banner{
+background:linear-gradient(90deg,#3498db,#2980b9);
+padding:16px;
+border-radius:10px;
+color:white;
+margin-bottom:25px;
+font-size:15px;
+}
+
+
+
+.card-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:18px;
+margin-bottom:25px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card span{
+display:block;
+margin-top:8px;
+font-size:24px;
+font-weight:bold;
+color:#3498db;
+}
+
+
+.area{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:25px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.titulo{
+font-size:18px;
+margin-bottom:12px;
+font-weight:bold;
+}
+
+ul{
+padding-left:20px;
+line-height:1.8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="menu-lateral">
+
+<h2>Sinaly</h2>
+
+<a href="#">🏠 Tela Inicial</a>
+<a href="Perfil.html">👤 Perfil</a>
+<a href="#">📊 Relatórios</a>
+<a href="configuracoes.html">⚙ Configurações</a>
+
+</div>
+
+
+<div class="conteudo">
+
+<div class="cabecalho">
+<h1 id="boasVindas">Bem-vindo</h1>
+<button class="logout-btn" id="logoutBtn">Sair</button>
+</div>
+
+
+<div class="banner">
+📢 Mensagem da administração: mantenha seus dados sempre atualizados.
+</div>
+
+
+<div class="card-container">
+
+<div class="card">
+👥 Usuários
+<span id="qtdUsuarios">0</span>
+</div>
+
+<div class="card">
+📁 Registros
+<span id="qtdRegistros">0</span>
+</div>
+
+<div class="card">
+📈 Acessos Hoje
+<span id="qtdAcessos">0</span>
+</div>
+
+<div class="card">
+🔐 Status
+<span id="statusConta">---</span>
+</div>
+
+</div>
+
+
+<div class="area">
+<div class="titulo">🔔 Notificações</div>
+<ul id="listaNotificacoes"></ul>
+</div>
+
+
+<div class="area">
+<div class="titulo">📜 Log de Atividades Recentes</div>
+<ul id="listaLog"></ul>
+</div>
+
+</div>
+
+<script>
+
+const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+if(!usuario){
+window.location.href="Login.html";
+}
+
+document.getElementById("boasVindas").textContent =
+`Bem-vindo, ${usuario.apelido || usuario.nome}`;
+
+document.getElementById("statusConta").textContent = usuario.status;
+
+const notificacoes=[
+"Nova atualização disponível.",
+"Seu perfil está 90% completo.",
+"1 atividade pendente para revisão."
+];
+
+const listaNotificacoes=document.getElementById("listaNotificacoes");
+
+notificacoes.forEach(n=>{
+const li=document.createElement("li");
+li.textContent=n;
+listaNotificacoes.appendChild(li);
+});
+
+document.getElementById("qtdUsuarios").textContent=128;
+document.getElementById("qtdRegistros").textContent=542;
+document.getElementById("qtdAcessos").textContent=37;
+
+const logs=[
+"Login realizado com sucesso.",
+"Visualizou a área de relatórios.",
+"Atualizou informações do perfil.",
+"Acessou o módulo Cadastros."
+];
+
+const listaLog=document.getElementById("listaLog");
+
+logs.forEach(l=>{
+const li=document.createElement("li");
+li.textContent=l;
+listaLog.appendChild(li);
+});
+
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+
+const confirmar=confirm("Deseja realmente sair?");
+
+if(confirmar){
+localStorage.removeItem("usuarioLogado");
+window.location.href="Login.html";
+}
+
+});
+
+</script>
+
+</body>
+</html>
