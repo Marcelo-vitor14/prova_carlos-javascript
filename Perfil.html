@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil - Sinaly</title>
+
+<style>
+
+body{
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+margin:0;
+}
+
+.topo{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(5px);
+color:white;
+}
+
+.topo nav a{
+color:white;
+margin-left:20px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topo nav a:hover{
+text-decoration:underline;
+}
+
+.container{
+width:90%;
+max-width:800px;
+margin:50px auto;
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+h2{
+text-align:center;
+margin-bottom:25px;
+color:#2c3e50;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.campo{
+display:flex;
+flex-direction:column;
+margin-bottom:10px;
+}
+
+.campo label{
+font-weight:bold;
+margin-bottom:5px;
+color:#333;
+}
+
+input,select,textarea{
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+transition:0.3s;
+}
+
+input:focus,select:focus,textarea:focus{
+border-color:#3498db;
+outline:none;
+box-shadow:0 0 5px rgba(52,152,219,0.4);
+}
+
+textarea{
+grid-column:span 2;
+height:100px;
+}
+
+.lgpd-box{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+.btn-salvar{
+width:100%;
+padding:14px;
+background:linear-gradient(90deg,#3498db,#1877c9);
+border:none;
+border-radius:8px;
+color:white;
+font-size:16px;
+cursor:pointer;
+margin-top:20px;
+transition:0.3s;
+}
+
+.btn-salvar:hover{
+transform:scale(1.02);
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="topo">
+<h1>Sinaly</h1>
+
+<nav>
+<a href="TelaInicial.html">Início</a>
+<a href="Perfil.html">Perfil</a>
+<a href="Login.html">Sair</a>
+</nav>
+</header>
+
+<div class="container">
+
+<h2>Perfil do Usuário</h2>
+
+<div class="form-grid">
+
+<div class="campo">
+<label>Nome fictício (Apelido):</label>
+<input type="text" id="apelido">
+</div>
+
+<div class="campo">
+<label>CPF:</label>
+<input type="text" id="cpf">
+</div>
+
+<div class="campo">
+<label>E-mail:</label>
+<input type="email" id="email">
+</div>
+
+<div class="campo">
+<label>Status:</label>
+<select id="status">
+<option value="Ativo">Ativo</option>
+<option value="Inativo">Inativo</option>
+<option value="Bloqueado">Bloqueado</option>
+</select>
+</div>
+
+<div class="campo">
+<label>Data de Cadastro:</label>
+<input type="text" id="dataCadastro" disabled>
+</div>
+
+<div class="campo">
+<label>Usuário Responsável pela Criação (ID):</label>
+<input type="text" id="criador" disabled>
+</div>
+
+<div class="campo">
+<label>Logs de Alterações:</label>
+<textarea id="logs" disabled></textarea>
+</div>
+
+<div class="campo">
+<label>Consentimento LGPD:</label>
+
+<div class="lgpd-box">
+<input type="checkbox" id="lgpd">
+<label for="lgpd">Aceito a Política de Privacidade</label>
+</div>
+
+</div>
+
+</div>
+
+<button class="btn-salvar" id="btnSalvar">Salvar Alterações</button>
+
+</div>
+
+<script>
+
+const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+if(!usuario){
+window.location.href="login.html";
+}
+
+document.getElementById("apelido").value = usuario.apelido || "";
+document.getElementById("cpf").value = usuario.cpf || "";
+document.getElementById("email").value = usuario.email || "";
+document.getElementById("status").value = usuario.status || "Ativo";
+document.getElementById("dataCadastro").value = usuario.dataCadastro || "";
+document.getElementById("criador").value = usuario.criadoPor || "";
+document.getElementById("logs").value = usuario.logs || "";
+document.getElementById("lgpd").checked = usuario.lgpd === true;
+
+document.getElementById("btnSalvar").addEventListener("click",()=>{
+
+usuario.apelido = document.getElementById("apelido").value;
+usuario.cpf = document.getElementById("cpf").value;
+usuario.email = document.getElementById("email").value;
+usuario.status = document.getElementById("status").value;
+usuario.lgpd = document.getElementById("lgpd").checked;
+
+usuario.logs =
+(usuario.logs || "") +
+`Alterado em: ${new Date().toLocaleString()}\n`;
+
+localStorage.setItem("usuarioLogado",JSON.stringify(usuario));
+
+alert("Informações atualizadas com sucesso!");
+
+});
+document.body.addEventListener("click", function(event){
+
+  const caixaFormulario = document.querySelector(".container");
+
+  if (!caixaFormulario.contains(event.target)) {
+    window.location.href = "TelaInicial.html";
+  }
+  window.location.href = "TelaInicial.html";
+});
+
+</script>
+
+</body>
+</html>
