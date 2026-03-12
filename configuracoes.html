@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurações - Sinaly</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
+
+body{
+display:flex;
+background:#eef1f5;
+}
+
+
+.menu-lateral{
+width:260px;
+background:linear-gradient(180deg,#2c3e50,#1a252f);
+height:100vh;
+padding-top:25px;
+position:fixed;
+color:white;
+}
+
+.menu-lateral h2{
+text-align:center;
+margin-bottom:30px;
+}
+
+.menu-lateral a{
+color:white;
+padding:15px 25px;
+display:block;
+text-decoration:none;
+transition:0.2s;
+}
+
+.menu-lateral a:hover{
+background:rgba(255,255,255,0.1);
+padding-left:35px;
+}
+
+.conteudo{
+margin-left:260px;
+padding:30px;
+width:calc(100% - 260px);
+}
+
+.cabecalho{
+background:white;
+padding:20px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.logout-btn{
+background:#e74c3c;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+.logout-btn:hover{
+background:#c0392b;
+}
+
+.card-config{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.card-config h3{
+margin-bottom:15px;
+color:#2c3e50;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:6px;
+margin-bottom:12px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.checkbox-group{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:10px;
+margin: left -30px;px;
+}
+button{
+background:#3498db;
+border:none;
+padding:10px 16px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+.btn-danger{
+background:#e74c3c;
+}
+
+.btn-danger:hover{
+background:#c0392b;
+}
+
+.mensagem{
+margin-top:8px;
+font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="menu-lateral">
+<h2>Sinaly</h2>
+
+<a href="TelaInicial.html">Tela Inicial</a>
+<a href="Perfil.html">Perfil</a>
+<a href="Configuracoes.html">Configurações</a>
+
+</div>
+
+<div class="conteudo">
+
+<div class="cabecalho">
+
+<h1>Configurações</h1>
+
+<button class="logout-btn" id="logoutBtn">Sair</button>
+
+</div>
+
+
+<div class="card-config">
+
+<h3>Tema do Sistema</h3>
+
+<label>Escolha o tema</label>
+
+<select id="tema">
+<option value="claro">Claro</option>
+<option value="escuro">Escuro</option>
+</select>
+
+<button onclick="salvarTema()">Salvar Tema</button>
+
+<div class="mensagem" id="msgTema"></div>
+
+</div>
+
+<div class="card-config">
+
+<h3>Notificações</h3>
+
+<div class="checkbox-group">
+<input type="checkbox" id="notEmail">
+<label for="notEmail">Receber notificações por e-mail</label>
+</div>
+
+<div class="checkbox-group">
+<input type="checkbox" id="notSistema">
+<label for="notSistema">Receber notificações do sistema</label>
+</div>
+
+<button onclick="salvarNotificacoes()">Salvar Preferências</button>
+
+<div class="mensagem" id="msgNot"></div>
+
+</div>
+
+<div class="card-config">
+
+<h3>Alterar Senha</h3>
+
+<input type="password" id="novaSenha" placeholder="Digite a nova senha">
+
+<button onclick="alterarSenha()">Alterar Senha</button>
+
+<div class="mensagem" id="msgSenha"></div>
+
+</div>
+
+<div class="card-config">
+
+<h3>Excluir Conta</h3>
+
+<p>Esta ação é permanente.</p>
+
+<button class="btn-danger" onclick="excluirConta()">Excluir Conta</button>
+
+<div class="mensagem" id="msgConta"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+if(!usuario){
+window.location.href="Login.html";
+}
+
+function salvarTema(){
+
+const tema = document.getElementById("tema").value;
+
+localStorage.setItem("temaSistema",tema);
+
+document.getElementById("msgTema").textContent="Tema salvo com sucesso.";
+
+}
+
+function salvarNotificacoes(){
+
+const email=document.getElementById("notEmail").checked;
+const sistema=document.getElementById("notSistema").checked;
+
+localStorage.setItem("notEmail",email);
+localStorage.setItem("notSistema",sistema);
+
+document.getElementById("msgNot").textContent="Preferências salvas.";
+
+}
+
+function alterarSenha(){
+
+const senha=document.getElementById("novaSenha").value;
+
+if(senha.length<8){
+
+document.getElementById("msgSenha").textContent="A senha precisa ter no mínimo 8 caracteres.";
+
+return;
+
+}
+
+usuario.senha=senha;
+
+localStorage.setItem("usuarioLogado",JSON.stringify(usuario));
+
+document.getElementById("msgSenha").textContent="Senha alterada com sucesso.";
+
+}
+
+function excluirConta(){
+
+const confirmar=confirm("Deseja realmente excluir sua conta?");
+
+if(confirmar){
+
+localStorage.removeItem("usuarioLogado");
+
+alert("Conta excluída.");
+
+window.location.href="Login.html";
+
+}
+
+}
+
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+
+localStorage.removeItem("usuarioLogado");
+
+window.location.href="Login.html";
+
+});
+
+</script>
+
+</body>
+</html>
